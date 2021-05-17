@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Dijkstra single source shortest path algorithm</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://me.idealli.com/images/apple-touch-icon-next.png?v=5.1.4">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://me.idealli.com/images/favicon-32x32-next.png?v=5.1.4">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://me.idealli.com/images/favicon-16x16-next.png?v=5.1.4">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <div class="control">
+      <h2><strong>Dijkstra algorithm</strong>Single source shortest path search demo
+        <!-- Place this tag where you want the button to render. -->
+        <a class="github-button" href="https://github.com/flymysql/Graph_dijkstra" data-icon="octicon-star"
+          data-show-count="true" aria-label="Star flymysql/Graph_dijkstra on GitHub">Star</a>
+      </h2>
+      <input type="button" name="" value="Clear page" class="refer" onclick="cleanele()">
+      <input type="button" name="" value="Clear connection" class="refer" onclick="cleanline()">
+      <input type="input" name="" id="input_num" value="6" class="int">
+      <input type="button" name="" value="Generate node" class="refer" onclick="input()">
+      <input type="button" name="" value="Randomly generate links" class="refer" onclick="randomCreate(1)">
+      <input type="button" name="" value="Randomly Generated Graph" class="refer" onclick="randomCreate(2)">
+      <input type="input" name="" id="begin" value="v0" class="int">
+      <input type="button" name="" value="Generate shortest path" class="refer" onclick="createPath()">
+
+    </div>
+    <div class="changdiv" id="changdiv">
+      Enter the weight and press OK to change<br>
+      <input type="input" name="" id="cnum"><br>
+      <br>
+      <div class="tochange" type="button" id="quxiao" onclick="quxiao()">cancel</div><br>
+      <div class="tochange" type="button" id="onchange" onclick="ok()">change</div><br>
+      <div class="tochange" type="button" style="background: rgb(190, 240, 81)" id="delete" onclick="deleteline()">删除该链路
+      </div>
+    </div>
+    <div class="slide" id="slider">
+      <h1>Operation instructions</h1>
+      <strong>Generate node</strong>
+      <p>Enter the number of nodes and click Generate Node</p>
+      <strong>Generate link</strong>
+      <p>The link can be generated after clicking the two nodes with the mouse</p>
+      <strong>Modify link weight</strong>
+      <p>Click the link weight with the mouse, modify it in the pop-up box, or choose to delete the link in the pop-up
+        box</p>
+      <strong>Generate shortest path</strong>
+      <p>Enter the starting node and click Generate to start dynamic demonstration of path search</p>
+      <strong>Algorithm explanation</strong>
+      <p><a href="https://me.idealli.com/post/15e41f53.html" target="_blank">Dijkstra's single source shortest
+          path-chick blog</a></p>
+      <p>
+        <strong>Source address</strong>
+        <a class="github-button" href="https://github.com/flymysql/Graph_dijkstra/fork" data-icon="octicon-repo-forked"
+          aria-label="Fork flymysql/Graph_dijkstra on GitHub">Fork</a>
+        <a class="github-button" href="https://github.com/flymysql" data-show-count="true"
+          aria-label="Follow @flymysql on GitHub">Follow</a>
+      </p>
+
+    </div>
+    <div id="Wrap"></div>
+    <div id="divele"></div>
+
+    <script type="text/javascript">
+      var onlink = false;
+      var onid = "";
+      var MaxvertextType = 100
+      var gigantic = 99999
+
+      var gx = ""
+      var gy = ""
+      var gobj
+
+
+      /*******************************************
+                    Algorithm part
+      ********************************************/
+      /*
+        Dijkstra algorithm
+      */
+
+      //Adjacency matrix
+      function Mgraph() {
+        this.vex = new Array();
+        this.edge = new Array();
+        this.vexnum = 0;
+        this.arcnum = 0;
+      };
+      function getVex(G, x) {
+        var i = 0;
+        for (; i < G.vexnum; i++) {
+          if (G.vex[i] == x) return i;
+        }
+        if (G.vex[i] != x) return -1;
+      }
+      //Single source shortest path algorithm
+      function Dijkstra(g, x) {
+        cleancolor();
+        var vexnum = g.vexnum;
+        var vex = getVex(g, x);
+        if (vex == -1) return;
+        var dist = new Array();
+        var path = new Array();
+        path[vex] = vex;
+        for (var i = 0; i < vexnum; ++i) {
+          dist[i] = g.edge[vex][i];
+          if (g.edge[vex][i] != gigantic) path[i] = vex;
+        }
+        console.log(dist)
+        var S = new Array();
+        S[vex] = true;
+        var dd;
+        var dvex = 0;
+        var j = 0;
+        var index = 1;
+        var descripe = document.getElementById("slider");
+        descripe.innerHTML = "";
+        for (; j < vexnum - 1; ++j) {
+          setTimeout(function () {
+            dd = gigantic;
+            for (var i = 0; i < vexnum; ++i) {
+              if (dist[i] < dd && !S[i]) {
+                dd = dist[i];
+                dvex = i;
+              }
+            }
+            if (dd == gigantic) {
+              for (var i = 0; i < vexnum; ++i) {
+                if (dist[i] == dd && !S[i]) {
+                  dvex = i;
+                  break;
+                }
+              }
+              var str = "node" + g.vex[dvex] + "unachievable<br><br>"
+
+              descripe.innerHTML = descripe.innerHTML + "<div class=slider_line><div class=slide_title>第" + index + "趟</div><div class=slide_content>" + str + "</div></div>";
+              document.body.appendChild(descripe);
+              index++;
+              S[dvex] = true;
+            }
+            else {
+              var element = document.getElementById(g.vex[dvex]);
+              var now = dvex;
+              var colo = "#" + (Math.round(Math.random() * 800) + 100);
+              element.style.background = colo;
+              var str = x + "到" + g.vex[dvex] + "的最短路径：" + g.vex[now];
+              while (now != vex) {
+                var line1 = document.getElementById(g.vex[now] + g.vex[path[now]]);
+                if (line1 == null)
+                  line1 = document.getElementById(g.vex[path[now]] + g.vex[now]);
+                //console.log(line1);
+                line1.style.stroke = colo;
+                now = path[now];
+                str = str + "<--" + g.vex[now];
+              }
+              str = str + "<br>总路程:" + dist[dvex] + "<br><br>";
+              descripe.innerHTML = descripe.innerHTML + "<div class=slider_line><div class=slide_title>第" + index + "趟</div><div class=slide_content>" + str + "</div></div>";
+              document.body.appendChild(descripe);
+              index++;
+              S[dvex] = true;
+              for (var k = 0; k < vexnum; ++k) {
+                if (!S[k]) {
+                  if (dist[dvex] + g.edge[dvex][k] < dist[k]) {
+                    dist[k] = dist[dvex] + g.edge[dvex][k];
+                    path[k] = dvex;
+                  }
+                }
+              }
+            }
+          }, 3000 * j);
+        }
+        /*
+            setTimeout(function(){
+                for (var m = 0; m < vexnum; ++m) {
+                var nowvex=m;
+                var str="\npath:"+g.vex[nowvex];
+                while(path[nowvex]!=vex){
+                    nowvex=path[nowvex];
+                    str=str+"<-"+g.vex[nowvex];
+                }
+                str=str+"<-"+g.vex[vex]+"\tdistance:"+dist[m];
+                console.log(str);
+            }
+            },j*3000+2000)
+        */
+      }
+
+      //图的初始化
+      function init(g) {
+        for (var i = 0; i < g.vexnum; i++) {
+          var temp = [];
+          for (var j = 0; j < g.vexnum; ++j) {
+            if (i == j) temp[j] = 0;
+            else temp[j] = gigantic;
+          }
+          g.edge[i] = temp;
+        }
+      }
+
+
+      /*******************************************
+                 图形化部分
+      ********************************************/
+
+
+      //先创建一个全局图
+      mgraph = new Mgraph;
+      var content = "";
+
+      //获取X轴坐标
+      function getElementLeft(element) {
+        var actualLeft = element.offsetLeft;
+        var current = element.offsetParent;
+        while (current !== null) {
+          actualLeft += current.offsetLeft;
+          current = current.offsetParent;
+        }
+        return actualLeft;
+      }
+
+      //获取y轴坐标
+      function getElementTop(element) {
+        var actualTop = element.offsetTop;
+        var current = element.offsetParent;
+        while (current !== null) {
+          actualTop += current.offsetTop;
+          current = current.offsetParent;
+        }
+        return actualTop;
+      }
+
+
+      //节点渲染
+      function input() {
+        if (mgraph.vexnum == 0) {
+          var oinput = document.getElementById('input_num');
+          var num = oinput.value;
+          mgraph.vexnum = num;
+          init(mgraph);
+          //初始化
+          for (var i = 0; i < num; i++) {
+            var vex = "v" + i;
+            mgraph.vex[i] = vex;
+            var div = document.getElementById("divele");
+            var ang = (360 / num) * i;
+            var x = 40 + Math.cos(ang * (Math.PI / 180)) * 30;
+            var y = 50 + Math.sin(ang * (Math.PI / 180)) * 30;
+            //console.log((pai/num)*i)
+
+            div.innerHTML = div.innerHTML + "<div id=" + vex + " style=" + "left:" + x + "%;" + "top:" + y + "%;" + " class=" + "test" + " onclick=link(this)>" + vex + "</div>";
+            document.body.appendChild(div);
+          }
+        }
+        else alert("\n\n请先清空页面上的已有节点！")
+      }
+
+      //链路线条渲染
+      function creatline(id1, id2, dis) {
+        var div = document.getElementById("Wrap");
+        var ele1 = document.getElementById(id1);
+        var x1 = getElementLeft(ele1) + 25;
+        var y1 = getElementTop(ele1) + 25;
+        var ele2 = document.getElementById(id2);
+        var x2 = getElementLeft(ele2) + 25;
+        var y2 = getElementTop(ele2) + 25;
+        //console.log(y2)
+        var size = " x1=" + x1 + " y1=" + y1 + " x2=" + x2 + " y2=" + y2;
+        div.innerHTML = div.innerHTML + "<svg class=lineWrap id=line" + id1 + id2 + "><line id=" + id1 + id2 + " " + size + " xmlns=" + "http://www.w3.org/2000/svg" + " stroke=" + "#ddd" + " stroke-width=" + 5 + " marker-end=" + "url(#arrow)" + "></line></svg>" + "<div class=int_num style=" + "left:" + (x1 + (x2 - x1) / 2.5) + "px;top:" + (y1 + (y2 - y1) / 2.5) + "px;position:fixed;" + " onclick=changnum(" + id1 + "," + id2 + ",this)>" + dis + "</div>"
+        document.body.appendChild(div);
+      }
+
+
+      function link(obj) {
+        var oid = obj.id;
+
+        if (oid != onid && onlink) {
+          var onclolor = document.getElementById(onid);
+          onclolor.style.background = "#49b1f5";
+          onclolor.style.height = "50px";
+          onclolor.style.width = "50px";
+          // onclolor.style.font-size="30px";
+          //生成随机路径长度
+          var dis = Math.round(Math.random() * 15) + 1;
+          var x1 = getVex(mgraph, oid);
+          var y1 = getVex(mgraph, onid);
+          if (mgraph.edge[x1][y1] == gigantic) {
+            console.log(dis);
+            creatline(oid, onid, dis);
+            //无向图的连线
+            mgraph.edge[x1][y1] = dis;
+            mgraph.edge[y1][x1] = dis;
+          }
+          onlink = false;
+          onid = "";
+        }
+        else if (!onlink) {
+          onid = obj.id;
+          onlink = true;
+          obj.style.background = "green";
+          obj.style.height = "70px";
+          obj.style.width = "70px";
+          // obj.style.font-size="40px";
+        }
+      }
+
+      //开始搜索路径
+      function createPath() {
+        var begin = document.getElementById("begin");
+        var bd = begin.value;
+        Dijkstra(mgraph, bd);
+      }
+
+      //修改链路权值弹框
+      function changnum(x, y, obj) {
+        var ch = document.getElementById("changdiv");
+        ch.style.display = "block";
+        //console.log(x);
+        gx = x.id;
+        gy = y.id;
+        gobj = obj;
+      }
+
+
+      //修改权值后点击确定事件
+      function ok() {
+        var changenum = document.getElementById("cnum");
+        var cnum = Number(changenum.value);
+
+        if (cnum != null) {
+          var x = getVex(mgraph, gx);
+          var y = getVex(mgraph, gy);
+          mgraph.edge[x][y] = cnum;
+          mgraph.edge[y][x] = cnum;
+          console.log(cnum);
+        }
+        gobj.innerText = Number(cnum);
+        var ch = document.getElementById("changdiv");
+        ch.style.display = "none";
+        changenum.value = ""
+      }
+
+      //删除链路
+      function deleteline() {
+        var div = document.getElementById("Wrap");
+        var line = document.getElementById("line" + gx + gy);
+        div.removeChild(line);
+        div.removeChild(gobj);
+        // line.style.display="none";
+        // gobj.style.display="none";
+        var x = getVex(mgraph, gx);
+        var y = getVex(mgraph, gy);
+        mgraph.edge[x][y] = gigantic;
+        mgraph.edge[y][x] = gigantic;
+        var ch = document.getElementById("changdiv");
+        ch.style.display = "none";
+      }
+
+      //取消修改权值
+      function quxiao() {
+        var ch = document.getElementById("changdiv");
+        ch.style.display = "none";
+        gx = "";
+        gy = "";
+      }
+
+      //清空链路
+      function cleanline() {
+        var div = document.getElementById("Wrap");
+        div.innerHTML = "";
+        init(mgraph);
+        var descripe = document.getElementById("slider");
+        descripe.innerHTML = content;
+        cleancolor();
+      }
+
+      //清空节点
+      function cleanele() {
+        var div = document.getElementById("divele");
+        div.innerHTML = "";
+        cleanline();
+        mgraph.vexnum = 0;
+        var descripe = document.getElementById("slider");
+        descripe.innerHTML = content;
+      }
+
+
+      //清空颜色
+      function cleancolor() {
+        var div = document.getElementById("divele")
+        var ele = div.getElementsByTagName("div")
+        for (var i = ele.length - 1; i >= 0; i--) {
+          ele[i].style.background = "#49b1f5";
+        }
+        var line = document.getElementById("Wrap");
+        var linele = line.getElementsByTagName("line")
+        for (var i = linele.length - 1; i >= 0; i--) {
+          linele[i].style.stroke = "#ddd";
+        }
+      }
+
+
+      //随机生成一个图
+      function randomCreate(num) {
+        cleanele();
+        var inputnum = document.getElementById("input_num");
+        var value = input_num.value;
+        if (num == 2) {
+          var value = Math.round(Math.random() * 4) + 4;
+          input_num.value = value;
+        }
+        input();
+        for (var i = value - 1; i >= 0; i--) {
+          var lines = Math.round(Math.random() * 2) + 1;
+          var S = new Array();
+          for (var m = value - 1; m >= 0; m--) S[i] = false;
+          var k = 0;
+          for (var j = lines - 1; j >= 0; j--) {
+            for (var n = value - 1; n >= 0; n--) {
+              if (30 > Math.round(Math.random() * 100) && !S[n] && k <= lines) {
+                var x = "v" + i;
+                var y = "v" + n;
+                var having = document.getElementById(y + x);
+                if (having == null) {
+
+                  var fuck = Math.round(Math.random() * 15) + 1;
+                  creatline(x, y, fuck);
+                  mgraph.edge[i][n] = fuck;
+                  mgraph.edge[n][i] = fuck;
+                }
+                S[n] = true;
+                k++;
+              }
+            }
+          }
+        }
+      }
+
+      window.onload = function () {
+        var descripe = document.getElementById("slider");
+        content = descripe.innerHTML;
+        randomCreate(2);
+        descripe.innerHTML = content;
+      }
+
+    </script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
+
+  </htm>
