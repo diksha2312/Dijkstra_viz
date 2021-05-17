@@ -188,7 +188,7 @@
         */
       }
 
-      //图的初始化
+      //Initialization of the graph
       function init(g) {
         for (var i = 0; i < g.vexnum; i++) {
           var temp = [];
@@ -202,15 +202,15 @@
 
 
       /*******************************************
-                 图形化部分
-      ********************************************/
+                    Graphical part
+         ********************************************/
 
 
-      //先创建一个全局图
+      //Create a global map first
       mgraph = new Mgraph;
       var content = "";
 
-      //获取X轴坐标
+      //  Get X coordinate
       function getElementLeft(element) {
         var actualLeft = element.offsetLeft;
         var current = element.offsetParent;
@@ -221,7 +221,7 @@
         return actualLeft;
       }
 
-      //获取y轴坐标
+      //Get the y-axis coordinates
       function getElementTop(element) {
         var actualTop = element.offsetTop;
         var current = element.offsetParent;
@@ -233,14 +233,14 @@
       }
 
 
-      //节点渲染
+      //Node rendering
       function input() {
         if (mgraph.vexnum == 0) {
           var oinput = document.getElementById('input_num');
           var num = oinput.value;
           mgraph.vexnum = num;
           init(mgraph);
-          //初始化
+          //initialization
           for (var i = 0; i < num; i++) {
             var vex = "v" + i;
             mgraph.vex[i] = vex;
@@ -254,10 +254,10 @@
             document.body.appendChild(div);
           }
         }
-        else alert("\n\n请先清空页面上的已有节点！")
+        else alert("\n\nPlease clear the existing nodes on the page first！")
       }
 
-      //链路线条渲染
+      //Link line rendering
       function creatline(id1, id2, dis) {
         var div = document.getElementById("Wrap");
         var ele1 = document.getElementById(id1);

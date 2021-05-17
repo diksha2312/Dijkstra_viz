@@ -11,7 +11,7 @@ let closeMove=function(){
     img.style.width=w+"px";
     img.style.left=x+"px";
     img.style.top=(y - container.scrollTop)+"px";
-    // 延迟移除dom
+    // Delayed removal of dom
     setTimeout(function(){
         div.remove();
         img.remove();
@@ -27,7 +27,7 @@ let closeFade=function(){
     }
     div.style.opacity=0;
     img.style.opacity=0;
-    // 延迟移除dom
+    // Delayed removal of dom
     setTimeout(function(){
         div.remove();
         img.remove();
@@ -78,8 +78,7 @@ img.style.cssText=`
     opacity:0;
 `;
 }
-
-// 监听滚动关闭层
+// listen to the scroll close layer
 document.addEventListener("scroll",function(){
     closeFade();
 });
@@ -88,15 +87,15 @@ document.querySelectorAll("img").forEach(v=>{
 	if (v.parentNode.localName!='a') {
 		v.id=imgid;
 		imgid++;
-		    v.addEventListener("click",function(e){ // 注册事件
-	        // 记录小图的位置个大小
+		    v.addEventListener("click",function(e){ // Registration issue
+			// Record the position and size of the small picture
 	        x=e.target.offsetLeft;
 	        y=e.target.offsetTop;
 	        w=e.target.offsetWidth;
 	        h=e.target.offsetHeight;
 	        src=e.target.src;
 	        id=e.target.id;
-	        // 创建遮罩层
+	        // Create a mask layer
 	        div=document.createElement("div");
 	        div.style.cssText=`
 	            position:fixed;
@@ -112,9 +111,9 @@ document.querySelectorAll("img").forEach(v=>{
 	        setTimeout(function(){
 	            div.style.opacity=1;
 	        },0);
-	        // (此处可以加loading)
+	        // (loading can be added here)
 
-	        // 创建副本
+			// Create a copy
 	        img=new Image();
 	        btnright=document.createElement("button");
 	        btnleft=document.createElement("button");
@@ -124,7 +123,7 @@ document.querySelectorAll("img").forEach(v=>{
 
 	        btnleft.onclick=function(){
 	        	if(id===0){
-	        		alert("已经是第一张了！");
+	        		alert("It's the first one！");
 	        		return;
 	        	}
 	        	var left=document.getElementById(id-1);
@@ -139,7 +138,7 @@ document.querySelectorAll("img").forEach(v=>{
 	        btnright.onclick=function(){
 	        	id++;
 	        	if(id>=imgid){
-	        		alert("已经是最后一张了！");
+	        		alert("It's the last one！");
 	        		return;
 	        	}
 	        	var right=document.getElementById(id);
@@ -156,11 +155,11 @@ document.querySelectorAll("img").forEach(v=>{
 	            document.body.appendChild(btnright);
 	            document.body.appendChild(btnleft);
 
-	            // 浏览器宽高
+	            // Browser width and height
 	            wh=window.innerHeight;
 	            ww=window.innerWidth;
 
-	            // 目标宽高和坐标
+	            // Target width and height and coordinates
 	            if(w/h<ww/wh){
 	            	th=wh-80;
 		            tw=w/h*th >> 0;
@@ -174,7 +173,7 @@ document.querySelectorAll("img").forEach(v=>{
 	            	ty=(wh-th)/2;
 	            }
 
-	            // 延迟写入否则不会有动画
+	            // Delay writing otherwise there will be no animation
 	            setTimeout(function(){
 	                img.style.opacity=1;
 	                img.style.height=th+"px";
@@ -185,7 +184,7 @@ document.querySelectorAll("img").forEach(v=>{
 	                btnleft.style.top=(ty+th/2)+"px";
 	                btnright.style.left=(tx+tw+40)+"px";
 	                btnright.style.top=(ty+th/2)+"px";
-	                // 点击隐藏
+	                // Click to hide
 	                div.onclick=img.onclick=closeMove;
 	            },10);
 	        };

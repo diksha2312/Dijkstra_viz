@@ -1,51 +1,48 @@
-# Dijkstra算法动态演示
+#Dijkstra algorithm dynamic demonstration
 
+**2018-11-24 update**
 
-**2018-11-24更新**
+It took a morning to write the js version and was able to demonstrate the process dynamically
 
-花了一早上写了js版本的，并能够动态演示过程
+Demo address: https://me.idealli.com/others/Dijkstra.html
 
-演示地址:https://me.idealli.com/others/Dijkstra.html
+![Lanzhou Little Red Chicken](https://picture-1256429518.cos.ap-chengdu.myqcloud.com/blog/112402.png)
 
-![兰州小红鸡](https://picture-1256429518.cos.ap-chengdu.myqcloud.com/blog/112402.png)
+First look at the description of the algorithm
 
+**Problem Description**
 
-先看下算法的描述
+Given a weighted directed graph G=(V,E), the weight of each edge is a non-negative real number. In addition, a vertex in V is also given, which is called the source. Now we want to calculate the shortest path length from the source to all other vertices. The length here refers to the sum of the weights on each side of the road. This problem is usually called the single-source shortest path problem.
+Dijkstra's algorithm solution
 
-**问题描述**
+Dijkstra proposed an algorithm to generate the shortest path to each vertex in the increasing order of the path length between each vertex and the source point v. First find the shortest path with the shortest length, and then use it to find the shortest path with the second shortest length, and so on, until all the shortest paths from the source point v to the other vertices are found.
 
-给定一个带权有向图 G=(V,E) ，其中每条边的权是一个非负实数。另外，还给定 V 中的一个顶点，称为源。现在我们要计算从源到所有其他各顶点的最短路径长度。这里的长度是指路上各边权之和。这个问题通常称为单源最短路径问题。
-Dijkstra算法的解决方案
+**The problem-solving thought of Dijkstra algorithm**
 
-Dijkstra提出按各顶点与源点v间的路径长度的递增次序，生成到各顶点的最短路径的算法。既先求出长度最短的一条最短路径，再参照它求出长度次短的一条最短路径，依次类推，直到从源点v 到其它各顶点的最短路径全部求出为止。
+Divide all the vertices V in the graph G into two vertex sets S and T. Taking v as the source point, the end point of the shortest path has been determined and merged into the S set. S initially contains only the vertex v, and T is the set of vertices that has not yet determined the shortest path to the source point v. Then select the point with the shortest path from the set point S to the set T each time from the set T, add it to the set S, and delete this point from the set T. Until the T set is empty.
 
+**Specific steps**
 
-**Dijkstra算法的解题思想**
+1. Choose a vertex v as the source point, and regard all edges starting from the source point v as the shortest path to each vertex (determine the data structure: because the shortest path is sought, ①a record from the source point v The path length array dist[] to other vertices. At the beginning, dist is the direct edge length from the source point v to the vertex i, that is, the record in dist is the v-th row of the adjacency matrix. ②Set one to record from the source point The path array path[] to other vertices, path stores the predecessor vertex of the i-th vertex on the path).
 
-将图G中所有的顶点V分成两个顶点集合S和T。以v为源点已经确定了最短路径的终点并入S集合中，S初始时只含顶点v,T则是尚未确定到源点v最短路径的顶点集合。然后每次从T集合中选择S集合点中到T路径最短的那个点，并加入到集合S中，并把这个点从集合T删除。直到T集合为空为止。
+2. Select the shortest path from the above shortest path dist[], and add its end point (ie v, k) k to the set s.
 
-**具体步骤**
+3. Adjust the shortest path from each vertex in T to the source point v. Because when vertex k is added to the set s, the path from the source point v to the remaining vertices j in T increases through the vertex k to j. This path may be shorter than the original source point v to j. To be short. The adjustment method is to compare dist[k]+g[k,j] and dist[j], whichever is smaller.
 
-1. 选一顶点v为源点，并视从源点v出发的所有边为到各顶点的最短路径（确定数据结构：因为求的是最短路径，所以①就要用一个记录从源点v到其它各顶点的路径长度数组dist[],开始时，dist是源点v到顶点i的直接边长度，即dist中记录的是邻接阵的第v行。②设一个用来记录从源点到其它顶点的路径数组path[],path中存放路径上第i个顶点的前驱顶点）。
-
-2. 在上述的最短路径dist[]中选一条最短的，并将其终点（即v,k）k加入到集合s中。
-
-3. 调整T中各顶点到源点v的最短路径。 因为当顶点k加入到集合s中后，源点v到T中剩余的其它顶点j就又增加了经过顶点k到达j的路径,这条路径可能要比源点v到j原来的最短的还要短。调整方法是比较dist[k]+g[k,j]与dist[j]，取其中的较小者。
-
-4. 再选出一个到源点v路径长度最小的顶点k,从T中删去后加入S中，再回去到第三步，如此重复，直到集合S中的包含图G的所有顶点。
+4. Then select a vertex k with the smallest path length to the source point v, delete it from T and add it to S, then go back to the third step, and repeat until the set S contains all the vertices of the graph G.
 
 <a href="https://me.idealli.com/post/651cfd47.html"><img src="https://image.idealli.com/blog/18123106.jpg"></a>
 
 <a href="https://www.vultr.com/?ref=7446652"><img src="https://www.vultr.com/media/banner_1.png" width="728" height="90"></a>
 
-**部分javascript代码**
+**Part of the javascript code**
 
 ```java
 
 var MaxvertextType = 100
 var gigantic = 99999
 
-//邻接矩阵
+//Adjacency matrix
 function Mgraph() {
     this.vex=new Array();
     this.edge=new Array();
@@ -60,14 +57,14 @@ function getVex(G,x){
 }
 
 
-//单源最短路径算法
+//Single source shortest path algorithm
 function Dijkstra(g,x){
     var vexnum=g.vexnum;
     var vex=getVex(g,x);
-    var dist= new Array();
+    var dist = new Array();
     var path = new Array();
     path[0]=0;
-    for (var i = 0; i < vexnum; ++i) {
+    for (var i = 0; i <vexnum; ++i) {
         dist[i]=g.edge[vex][i];
         if(dist[i]!=gigantic)path[i]=0;
     }
@@ -75,16 +72,16 @@ function Dijkstra(g,x){
     S[0] = true;
     var dd;
     var dvex=0;
-    for (var j = 0; j < vexnum-1; ++j) {
+    for (var j = 0; j <vexnum-1; ++j) {
         dd=gigantic;
-        for (var i = 1; i < vexnum; ++i) {
+        for (var i = 1; i <vexnum; ++i) {
             if(dist[i]<dd && !S[i]) {
                 dd=dist[i];
                 dvex=i;
             }
         }
         S[dvex]= true;
-        for (var k = 1; k < vexnum; ++k) {
+        for (var k = 1; k <vexnum; ++k) {
             if (!S[k]){
                 if (dist[dvex]+g.edge[dvex][k]<dist[k]) {
                     dist[k] = dist[dvex] + g.edge[dvex][k];
@@ -93,7 +90,7 @@ function Dijkstra(g,x){
             }
         }
     }
-    for (var m = 1; m < vexnum; ++m) {
+    for (var m = 1; m <vexnum; ++m) {
         var nowvex=m;
         var str="\npath:"+g.vex[nowvex];
         while(path[nowvex]!=0){
@@ -106,11 +103,11 @@ function Dijkstra(g,x){
 }
 
 
-//图的初始化
+//Initialization of the graph
 function init(g){
     for(var i=0;i<g.vexnum;i++){
         var temp=[];
-        for (var j = 0; j < g.vexnum; ++j) {
+        for (var j = 0; j <g.vexnum; ++j) {
             if (i==j) temp[j]=0;
             else temp[j]=gigantic;
         }
@@ -120,8 +117,4 @@ function init(g){
 
 ```
 
-感觉代码还是有点臃肿了
-
-
-
-
+I feel that the code is still a bit bloated

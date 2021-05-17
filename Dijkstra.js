@@ -1,8 +1,7 @@
-
 var MaxvertextType = 100
 var gigantic = 99999
 
-//邻接矩阵
+//Adjacency matrix
 function Mgraph() {
     this.vex=new Array();
     this.edge=new Array();
@@ -17,7 +16,7 @@ function getVex(G,x){
 }
 
 
-//单源最短路径算法
+//Single source shortest path algorithm
 function Dijkstra(g,x){
     var vexnum=g.vexnum;
     var vex=getVex(g,x);
@@ -63,7 +62,7 @@ function Dijkstra(g,x){
 }
 
 
-//图的初始化
+//Initialization of the graph
 function init(g){
     for(var i=0;i<g.vexnum;i++){
         var temp=[];
