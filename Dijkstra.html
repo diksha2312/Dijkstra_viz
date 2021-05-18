@@ -6,18 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://me.idealli.com/images/apple-touch-icon-next.png?v=5.1.4">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://me.idealli.com/images/favicon-32x32-next.png?v=5.1.4">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://me.idealli.com/images/favicon-16x16-next.png?v=5.1.4">
     <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
     <div class="control">
-      <h2><strong>Dijkstra algorithm</strong>Single source shortest path search demo
-        <!-- Place this tag where you want the button to render. -->
-        <a class="github-button" href="https://github.com/flymysql/Graph_dijkstra" data-icon="octicon-star"
-          data-show-count="true" aria-label="Star flymysql/Graph_dijkstra on GitHub">Star</a>
+      <h2><strong>Dijkstra algorithm</strong> Single source shortest path search demo
       </h2>
       <input type="button" name="" value="Clear page" class="refer" onclick="cleanele()">
       <input type="button" name="" value="Clear connection" class="refer" onclick="cleanline()">
@@ -29,15 +23,18 @@
       <input type="button" name="" value="Generate shortest path" class="refer" onclick="createPath()">
 
     </div>
+    <!--CHANGE THE WEIGHT OF EDGE-->
     <div class="changdiv" id="changdiv">
       Enter the weight and press OK to change<br>
       <input type="input" name="" id="cnum"><br>
       <br>
       <div class="tochange" type="button" id="quxiao" onclick="quxiao()">cancel</div><br>
       <div class="tochange" type="button" id="onchange" onclick="ok()">change</div><br>
-      <div class="tochange" type="button" style="background: rgb(190, 240, 81)" id="delete" onclick="deleteline()">删除该链路
+      <div class="tochange" type="button" style="background: rgb(190, 240, 81)" id="delete" onclick="deleteline()">
+        Delete the link
       </div>
     </div>
+    <!--END CHANGE THE WEIGHT OF EDGEs-->
     <div class="slide" id="slider">
       <h1>Operation instructions</h1>
       <strong>Generate node</strong>
@@ -342,7 +339,7 @@
         changenum.value = ""
       }
 
-      //删除链路
+      //Delete link
       function deleteline() {
         var div = document.getElementById("Wrap");
         var line = document.getElementById("line" + gx + gy);
@@ -358,7 +355,7 @@
         ch.style.display = "none";
       }
 
-      //取消修改权值
+      //Cancel modification weight
       function quxiao() {
         var ch = document.getElementById("changdiv");
         ch.style.display = "none";
