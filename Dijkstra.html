@@ -139,7 +139,7 @@
               }
               var str = "node" + g.vex[dvex] + "unachievable<br><br>"
 
-              descripe.innerHTML = descripe.innerHTML + "<div class=slider_line><div class=slide_title>第" + index + "趟</div><div class=slide_content>" + str + "</div></div>";
+              descripe.innerHTML = descripe.innerHTML + "<div class=slider_line><div class=slide_title>clause" + index + "time</div><div class=slide_content>" + str + "</div></div>";
               document.body.appendChild(descripe);
               index++;
               S[dvex] = true;
@@ -149,7 +149,7 @@
               var now = dvex;
               var colo = "#" + (Math.round(Math.random() * 800) + 100);
               element.style.background = colo;
-              var str = x + "到" + g.vex[dvex] + "的最短路径：" + g.vex[now];
+              var str = x + "arrive" + g.vex[dvex] + "The shortest path：" + g.vex[now];
               while (now != vex) {
                 var line1 = document.getElementById(g.vex[now] + g.vex[path[now]]);
                 if (line1 == null)
@@ -159,8 +159,8 @@
                 now = path[now];
                 str = str + "<--" + g.vex[now];
               }
-              str = str + "<br>总路程:" + dist[dvex] + "<br><br>";
-              descripe.innerHTML = descripe.innerHTML + "<div class=slider_line><div class=slide_title>第" + index + "趟</div><div class=slide_content>" + str + "</div></div>";
+              str = str + "<br>Total distance:" + dist[dvex] + "<br><br>";
+              descripe.innerHTML = descripe.innerHTML + "<div class=slider_line><div class=slide_title>clause" + index + "time</div><div class=slide_content>" + str + "</div></div>";
               document.body.appendChild(descripe);
               index++;
               S[dvex] = true;
@@ -285,14 +285,14 @@
           onclolor.style.height = "50px";
           onclolor.style.width = "50px";
           // onclolor.style.font-size="30px";
-          //生成随机路径长度
+          //The length of the random path is generated
           var dis = Math.round(Math.random() * 15) + 1;
           var x1 = getVex(mgraph, oid);
           var y1 = getVex(mgraph, onid);
           if (mgraph.edge[x1][y1] == gigantic) {
             console.log(dis);
             creatline(oid, onid, dis);
-            //无向图的连线
+            //No connection to the graph
             mgraph.edge[x1][y1] = dis;
             mgraph.edge[y1][x1] = dis;
           }
@@ -309,14 +309,14 @@
         }
       }
 
-      //开始搜索路径
+      //Start searching for paths
       function createPath() {
         var begin = document.getElementById("begin");
         var bd = begin.value;
         Dijkstra(mgraph, bd);
       }
 
-      //修改链路权值弹框
+      //Modify the link right value bullet box
       function changnum(x, y, obj) {
         var ch = document.getElementById("changdiv");
         ch.style.display = "block";
@@ -327,7 +327,7 @@
       }
 
 
-      //修改权值后点击确定事件
+      //After modifying the weight, click OK event
       function ok() {
         var changenum = document.getElementById("cnum");
         var cnum = Number(changenum.value);
@@ -369,7 +369,7 @@
         gy = "";
       }
 
-      //清空链路
+      //Empty the link
       function cleanline() {
         var div = document.getElementById("Wrap");
         div.innerHTML = "";
@@ -379,7 +379,7 @@
         cleancolor();
       }
 
-      //清空节点
+      //Empty the node
       function cleanele() {
         var div = document.getElementById("divele");
         div.innerHTML = "";
@@ -390,7 +390,7 @@
       }
 
 
-      //清空颜色
+      //Empty the color
       function cleancolor() {
         var div = document.getElementById("divele")
         var ele = div.getElementsByTagName("div")
@@ -405,7 +405,7 @@
       }
 
 
-      //随机生成一个图
+      //Randomly generate a graph
       function randomCreate(num) {
         cleanele();
         var inputnum = document.getElementById("input_num");
